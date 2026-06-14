@@ -1,0 +1,21 @@
+name: FlagGame
+version: '1.0.0'
+main: com.flaggame.FlagGamePlugin
+api-version: '1.21'
+authors: [ 'Codex' ]
+description: Two-player English and Hebrew flag guessing game.
+depend: [ 'Images' ]
+
+commands:
+  flaggame:
+    description: Join and control the flag guessing game.
+    usage: /flaggame <join|leave|start [easy|medium|hard]|test [easy|medium|hard]|skip|what|stop|status|reload>
+    aliases: [ 'fg' ]
+
+permissions:
+  flaggame.play:
+    description: Join and start flag games.
+    default: true
+  flaggame.admin:
+    description: Test, inspect, stop, or reload flag games.
+    default: op

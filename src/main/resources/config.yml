@@ -1,0 +1,20 @@
+country-list-url: "https://flagcdn.com/en/codes.json"
+
+location:
+  # The flag appears at these coordinates in the world where the game is started.
+  x: 0
+  y: 0
+  z: 0
+
+  # Valid directions: NORTH, SOUTH, EAST, WEST
+  direction: NORTH
+
+image:
+  # 384x256 is displayed by Images as a 3x2 map wall.
+  # Use multiples of 128 for exact map dimensions.
+  width: 384
+  height: 256
+  url: "https://flagcdn.com/w320/%s.png"
+
+points-to-win: 10
+round-delay-ticks: 40
