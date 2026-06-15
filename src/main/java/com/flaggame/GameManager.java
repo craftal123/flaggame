@@ -2,6 +2,7 @@ package com.flaggame;
 
 import java.io.IOException;
 import java.net.URI;
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
@@ -27,6 +28,7 @@ import net.kyori.adventure.text.event.ClickEvent;
 import net.kyori.adventure.text.event.HoverEvent;
 import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.format.TextDecoration;
+import net.kyori.adventure.title.Title;
 
 final class GameManager implements Listener {
 
@@ -352,6 +354,15 @@ final class GameManager implements Listener {
             completedGeneration = roundGeneration;
         }
 
+        player.showTitle(Title.title(
+                Component.text("CORRECT!", NamedTextColor.GREEN).decorate(TextDecoration.BOLD),
+                Component.empty(),
+                Title.Times.times(
+                        Duration.ofMillis(150),
+                        Duration.ofMillis(1_200),
+                        Duration.ofMillis(350)
+                )
+        ));
         broadcast("&a" + player.getName() + " was first! &fThe flag was &e"
                 + answer.englishName() + " &7/ &e" + answer.hebrewName()
                 + "&f. Score: &6" + score + "&f/&6" + winningScore);
