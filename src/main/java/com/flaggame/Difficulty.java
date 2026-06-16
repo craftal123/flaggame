@@ -44,7 +44,9 @@ enum Difficulty {
 
     List<Country> filter(List<Country> countries) {
         if (this == HARD) {
-            return countries;
+            return countries.stream()
+                    .filter(country -> !MEDIUM.codes.contains(country.code()))
+                    .toList();
         }
         return countries.stream()
                 .filter(country -> codes.contains(country.code()))

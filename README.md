@@ -50,11 +50,11 @@ configurable; multiples of 128 produce exact map dimensions.
 - `/flaggame stop` (`flaggame.admin`)
 - `/flaggame reload` (`flaggame.admin`)
 
-Difficulty pools are cumulative:
+Difficulty pools are separate:
 
 - `easy`: 34 highly recognizable flags
 - `medium`: 119 commonly encountered country flags
-- `hard`: every country and territory in the live FlagCDN catalog
+- `hard`: the remaining live FlagCDN country and territory flags, excluding easy and medium
 
 Leaving out the difficulty defaults to `medium`. `/fg` is an alias for
 `/flaggame`, so `/fg start easy` and `/fg test hard` work identically.
@@ -65,6 +65,8 @@ one game. The used-flag history resets when a new game starts.
 During a round, recognized wrong country guesses from participating players are
 hidden from global chat and echoed privately to the player who wrote them. This
 prevents country-name spam while still letting each player see their own guess.
+Players in a running game cannot write to global chat; non-country messages are
+also kept private to the sender until the game ends.
 
 Each round includes a clickable vote-skip message. Players can click it or run
 `/flaggame skip` (or `/fg skip`). When every player in the match votes, the answer

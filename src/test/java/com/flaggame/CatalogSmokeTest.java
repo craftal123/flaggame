@@ -63,9 +63,10 @@ final class CatalogSmokeTest {
 
         check(easy.size() == 34, "Expected 34 easy flags, got " + easy.size());
         check(medium.size() == 119, "Expected 119 medium flags, got " + medium.size());
-        check(hard.size() == countries.size(), "Hard should contain the full catalog");
+        check(hard.size() == countries.size() - medium.size(),
+                "Hard should contain only flags outside medium");
         check(medium.containsAll(easy), "Medium should include every easy flag");
-        check(hard.containsAll(medium), "Hard should include every medium flag");
+        check(hard.stream().noneMatch(medium::contains), "Hard should not include easy or medium flags");
 
         FlagDeck deck = new FlagDeck();
         var drawnCodes = new HashSet<String>();

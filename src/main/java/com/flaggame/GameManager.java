@@ -301,28 +301,31 @@ final class GameManager implements Listener {
         Player player = event.getPlayer();
         boolean correct;
         boolean recognizedCountry;
+        boolean canAnswer;
         synchronized (lock) {
-            if (!active || !acceptingAnswers || currentCountry == null
-                    || !players.containsKey(player.getUniqueId())) {
+            if (!active || !players.containsKey(player.getUniqueId())) {
                 return;
             }
-            correct = currentCountry.matches(event.getMessage());
-            recognizedCountry = catalog.isKnownCountryAnswer(event.getMessage());
+            canAnswer = acceptingAnswers && currentCountry != null;
+            correct = canAnswer && currentCountry.matches(event.getMessage());
+            recognizedCountry = canAnswer && catalog.isKnownCountryAnswer(event.getMessage());
             if (correct) {
                 acceptingAnswers = false;
                 skipVotes.clear();
             }
         }
 
-        if (correct || recognizedCountry) {
-            event.setCancelled(true);
-        }
+        event.setCancelled(true);
         if (correct) {
             Bukkit.getScheduler().runTask(plugin, () -> awardPoint(player));
         } else if (recognizedCountry) {
             String guess = event.getMessage();
             Bukkit.getScheduler().runTask(plugin,
                     () -> message(player, "&cWrong guess: &f" + guess));
+        } else {
+            String message = event.getMessage();
+            Bukkit.getScheduler().runTask(plugin,
+                    () -> message(player, "&7Hidden from global chat: &f" + message));
         }
     }
 
@@ -508,7 +511,15 @@ final class GameManager implements Listener {
     }
 
     private void broadcast(String text) {
-        Bukkit.broadcastMessage(color("&6[FlagGame] &r" + text));
+        String message = color("&6[FlagGame] &r" + text);
+        synchronized (lock) {
+            for (UUID uuid : players.keySet()) {
+                Player player = Bukkit.getPlayer(uuid);
+                if (player != null) {
+                    player.sendMessage(message);
+                }
+            }
+        }
     }
 
     private void sendSkipPrompt() {
